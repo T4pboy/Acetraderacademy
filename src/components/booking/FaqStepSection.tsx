@@ -4,10 +4,10 @@ import WhiteContainer from "./WhiteContainer";
 import WistiaVideo from "@/components/WistiaVideo";
 
 const FAQ_ITEMS = [
-  { mediaId: "ahu3h3suf6", question: "I keep failing my prop firm eval. I don't think I can pass one." },
+  { mediaId: "ahu3h3suf6", question: "How much time until results?" },
   { mediaId: "41wmk89a73", question: "I've tried other courses and lost money. Why would this be different?" },
   { mediaId: "tn7f1nuxxt", question: "What if I still don't get funded even after this?" },
-  { mediaId: "ybpudpc3rt", question: "How much time until results?" },
+  { mediaId: "ybpudpc3rt", question: "I keep failing my prop firm eval. I don't think I can pass one." },
 ];
 
 export default function FaqStepSection() {
@@ -35,10 +35,15 @@ export default function FaqStepSection() {
           </p>
           <div className="grid grid-cols-1 gap-x-14 gap-y-20 sm:grid-cols-2">
             {FAQ_ITEMS.map(({ mediaId, question }) => (
-              <div key={mediaId}>
-                <p className="mb-5 text-center text-[1.05rem] font-bold leading-snug text-slate-900 sm:text-[1.1rem]">
-                  {question}
-                </p>
+              <div key={mediaId} className="flex flex-col">
+                {/* Fixed-height caption slot (room for 2 lines) so every
+                    video below starts at the same offset, whether its own
+                    question wraps to one line or two. */}
+                <div className="mb-5 flex min-h-[3.4rem] items-center justify-center sm:min-h-[3.6rem]">
+                  <p className="text-center text-[1.05rem] font-bold leading-snug text-slate-900 sm:text-[1.1rem]">
+                    {question}
+                  </p>
+                </div>
                 <WistiaVideo mediaId={mediaId} />
               </div>
             ))}
