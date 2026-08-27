@@ -33,8 +33,12 @@ export default function WistiaVideo({ mediaId, aspect = 16 / 9 }: Props) {
         }}
       />
       <div className="rounded-4xl border border-brand-blue/35 bg-gradient-to-b from-surface-elevated to-[#050a16] p-2.5 [box-shadow:var(--shadow-glow-lg),0_40px_80px_-30px_rgba(0,0,0,0.7)]">
-        <div className="overflow-hidden rounded-[calc(var(--radius-4xl)-6px)]">
-          <wistia-player media-id={mediaId} aspect={aspect} />
+        {/* Fixed aspect-ratio box, enforced at the CSS level rather than
+            trusting the player to size itself — different source videos
+            (different native resolutions) were rendering at slightly
+            different heights otherwise, breaking the grid's alignment. */}
+        <div className="overflow-hidden rounded-[calc(var(--radius-4xl)-6px)]" style={{ aspectRatio: aspect }}>
+          <wistia-player media-id={mediaId} aspect={aspect} className="block h-full w-full" />
         </div>
       </div>
     </div>
