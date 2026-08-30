@@ -16,7 +16,7 @@ export default function FaqStepSection() {
       <WhiteContainer className="max-w-[900px]">
         <div className="mx-auto mb-14 max-w-[560px] text-center">
           <div className="mb-5 flex justify-center">
-            <StepBadge step="Step 2" tone="light">Get Your Questions Answered</StepBadge>
+            <StepBadge step="Step 3" tone="light">Get Your Questions Answered</StepBadge>
           </div>
           <h2 className="text-[1.5rem] font-extrabold leading-tight text-slate-900 sm:text-[1.8rem]">
             What Is The <span className="text-brand-blue">A.C.E. Method?</span>

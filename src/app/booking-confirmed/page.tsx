@@ -31,8 +31,8 @@ export default async function BookingConfirmedPage({
       <StickyUrgencyBar name={name} />
       <main>
         <BookingHero name={name} />
-        <FaqStepSection />
         <ProofSection />
+        <FaqStepSection />
         <ClosingBand />
       </main>
       <Footer />

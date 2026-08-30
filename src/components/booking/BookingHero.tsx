@@ -12,7 +12,7 @@ export default function BookingHero({ name }: Props) {
         </h1>
 
         <p className="mx-auto mb-2.5 max-w-[560px] text-[1.05rem] font-semibold leading-snug text-text-primary sm:text-[1.15rem]">
-          You Are Going To Receive A Call From My Team Within 48 Hours.
+          Complete These Steps So We Can Make The Most Of Our Call.
         </p>
 
         <p className="mx-auto mb-8 max-w-[520px] text-[13.5px] leading-relaxed text-text-secondary sm:text-[15px]">

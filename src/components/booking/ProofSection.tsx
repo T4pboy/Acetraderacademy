@@ -9,7 +9,7 @@ import WhiteContainer from "./WhiteContainer";
 import VidalyticsPlayer from "@/components/VidalyticsPlayer";
 
 /**
- * "Step 3: People Just Like You Who Followed The System" — reuses the main
+ * "Step 2: People Just Like You Who Followed The System" — reuses the main
  * page's testimonial carousel and modal as-is (per user request), just
  * dropped into this page's own step framing instead of TransformationSection's.
  */
@@ -21,7 +21,7 @@ export default function ProofSection() {
       <WhiteContainer className="max-w-[1120px]">
         <div className="mx-auto mb-14 max-w-[640px] text-center">
           <div className="mb-5 flex justify-center">
-            <StepBadge step="Step 3" tone="light">People Just Like You</StepBadge>
+            <StepBadge step="Step 2" tone="light">People Just Like You</StepBadge>
           </div>
           <h2 className="mb-3 text-[1.5rem] font-extrabold leading-tight text-slate-900 sm:text-[1.8rem]">
             People Just Like You Who Followed The System

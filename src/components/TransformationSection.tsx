@@ -4,7 +4,6 @@ import { useState } from "react";
 import { testimonials } from "@/data/testimonials";
 import TestimonialCarousel from "./TestimonialCarousel";
 import TestimonialModal from "./TestimonialModal";
-import AvailabilityNotice from "./AvailabilityNotice";
 
 export default function TransformationSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -21,8 +20,6 @@ export default function TransformationSection() {
         </div>
 
         <TestimonialCarousel items={testimonials} onOpen={setActiveIndex} />
-
-        <AvailabilityNotice />
       </div>
 
       <TestimonialModal
