@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 function formatName(raw: string | undefined) {
   const trimmed = raw?.trim();
   if (!trimmed) return "Trader";
-  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+  return trimmed
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 export default async function BookingConfirmedPage({

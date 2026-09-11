@@ -2,11 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const TALLY_FORM_ID = "wQZ5jG";
-const TALLY_SRC =
-  `https://tally.so/embed/${TALLY_FORM_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`;
+const DEFAULT_FORM_ID = "wQZ5jG";
 const TALLY_WIDGET_SCRIPT = "https://tally.so/widgets/embed.js";
-const TALLY_FORM_PAGE = `https://tally.so/r/${TALLY_FORM_ID}`;
+
+type Props = {
+  /** Tally form id — defaults to the main application form. Pass a
+   * different id (e.g. the onboarding survey) to reuse this same
+   * ready-detection/fallback logic for another form. */
+  formId?: string;
+  title?: string;
+  height?: number;
+  loadingLabel?: string;
+  fallbackLabel?: string;
+};
 
 // Guards the widget-script injection so it only ever runs once per page —
 // without this, React Strict Mode's double-invoked mount effect (dev only,
@@ -38,15 +46,23 @@ function ensureTallyScript(onReady: () => void) {
   document.body.appendChild(script);
 }
 
-export default function TallyEmbed() {
+export default function TallyEmbed({
+  formId = DEFAULT_FORM_ID,
+  title = "Apply For Your Free Strategy Call",
+  height = 430,
+  loadingLabel = "Loading the application form…",
+  fallbackLabel = "Open the application in a new tab",
+}: Props) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "timeout">("loading");
+  const tallySrc = `https://tally.so/embed/${formId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`;
+  const tallyFormPage = `https://tally.so/r/${formId}`;
 
   useEffect(() => {
     const applySrc = () => {
       const el = iframeRef.current;
       if (el && !el.getAttribute("src")) {
-        el.src = TALLY_SRC;
+        el.src = tallySrc;
       }
     };
 
@@ -87,7 +103,7 @@ export default function TallyEmbed() {
       window.removeEventListener("message", onMessage);
       clearTimeout(timeout);
     };
-  }, []);
+  }, [tallySrc]);
 
   return (
     <div className="relative rounded-2xl bg-white p-2 shadow-[inset_0_0_0_1px_rgba(15,23,42,0.06),0_20px_45px_-20px_rgba(0,0,0,0.5)] sm:p-3">
@@ -96,7 +112,7 @@ export default function TallyEmbed() {
           {status === "loading" ? (
             <>
               <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-gold" />
-              <span className="text-sm text-slate-500">Loading the application form&hellip;</span>
+              <span className="text-sm text-slate-500">{loadingLabel}</span>
             </>
           ) : (
             <>
@@ -105,12 +121,12 @@ export default function TallyEmbed() {
                 extension is blocking it.
               </span>
               <a
-                href={TALLY_FORM_PAGE}
+                href={tallyFormPage}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-full bg-gold px-5 py-2.5 font-display text-[13px] font-bold text-[#04101f] transition-colors hover:brightness-110"
               >
-                Open the application in a new tab
+                {fallbackLabel}
               </a>
             </>
           )}
@@ -120,11 +136,11 @@ export default function TallyEmbed() {
         ref={iframeRef}
         loading="eager"
         width="100%"
-        height={430}
+        height={height}
         frameBorder="0"
         marginHeight={0}
         marginWidth={0}
-        title="Apply For Your Free Strategy Call"
+        title={title}
         className={status === "ready" ? "rounded-xl" : "hidden"}
       />
     </div>
