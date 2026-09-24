@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import VidalyticsPlayer from "@/components/VidalyticsPlayer";
+import WistiaVideo from "@/components/WistiaVideo";
 import TallyEmbed from "@/components/TallyEmbed";
 import OnboardingStep from "./OnboardingStep";
 import StepCtaButton from "./StepCtaButton";
@@ -67,19 +67,11 @@ export default function OnboardingChecklist() {
           number={1}
           eyebrow="Start Here"
           title="Watch your welcome video"
-          description="This walks you through everything below — watch it before you touch anything else, it'll save you time."
+          description="This walks you through everything below, watch it before you touch anything else, it'll save you time."
           completed={isDone(1)}
           onToggle={() => toggle(1)}
         >
-          {/*
-            Placeholder: reusing the main VSL's Vidalytics embed until the
-            client sends a dedicated welcome-video embed id.
-          */}
-          <VidalyticsPlayer
-            embedId="vidalytics_embed__gqH2vfgV9j1MdMs"
-            htmlSrc="/vsl-embed.html"
-            posterLabel="Watch Your Welcome Video"
-          />
+          <WistiaVideo mediaId="j8vba4sd5y" />
         </OnboardingStep>
 
         <OnboardingStep
@@ -89,7 +81,7 @@ export default function OnboardingChecklist() {
           description={
             <>
               A <strong className="text-text-primary">1-on-1 call</strong> to
-              map your first 30 days inside the Academy — your goals, your
+              map your first 30 days inside the Academy: your goals, your
               timeline, your target prop firm. Slots fill up fast, lock yours
               in before you do anything else.
             </>
@@ -113,8 +105,7 @@ export default function OnboardingChecklist() {
           completed={isDone(3)}
           onToggle={() => toggle(3)}
         >
-          {/* Placeholder link — swap for the real Discord invite when ready. */}
-          <StepCtaButton href="#" icon={<DiscordIcon className="h-4 w-4" />}>
+          <StepCtaButton href="https://discord.gg/T66ytAyjz" icon={<DiscordIcon className="h-4 w-4" />}>
             Join The Discord Community
           </StepCtaButton>
         </OnboardingStep>
@@ -126,8 +117,8 @@ export default function OnboardingChecklist() {
           description={
             <>
               Every past class, breakdown, and case study lives here. Start
-              with the <strong className="text-text-primary">first video</strong>
-              — it sets up everything else inside the library.
+              with the <strong className="text-text-primary">first video</strong>,
+              it sets up everything else inside the library.
             </>
           }
           completed={isDone(4)}

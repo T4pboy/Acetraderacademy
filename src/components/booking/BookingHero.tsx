@@ -16,7 +16,7 @@ export default function BookingHero({ name }: Props) {
         </p>
 
         <p className="mx-auto mb-8 max-w-[520px] text-[13.5px] leading-relaxed text-text-secondary sm:text-[15px]">
-          We&rsquo;ve all blown an account before — follow these steps before
+          We&rsquo;ve all blown an account before. Follow these steps before
           your call.
         </p>
 

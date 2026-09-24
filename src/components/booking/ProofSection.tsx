@@ -27,7 +27,7 @@ export default function ProofSection() {
             People Just Like You Who Followed The System
           </h2>
           <p className="text-slate-500">
-            Real students, real payouts — the same system you&rsquo;re about
+            Real students, real payouts, the same system you&rsquo;re about
             to get walked through on your call.
           </p>
         </div>

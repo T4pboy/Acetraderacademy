@@ -33,13 +33,17 @@ export default function OnboardingStep({
       {!isLast && (
         <div
           aria-hidden="true"
-          className="absolute bottom-0 left-5 top-10 w-px bg-gradient-to-b from-gold/40 to-border"
+          className="absolute bottom-0 left-5 top-10 hidden w-px bg-gradient-to-b from-gold/40 to-border sm:block"
         />
       )}
 
-      <div className="relative flex gap-5 sm:gap-7">
+      <div className="relative flex sm:gap-7">
+        {/* Side timeline node: only shown from sm: up. Below that, the
+            number moves inline with the eyebrow instead, so the card
+            gets the full row width rather than sharing it with this
+            fixed 40px + gap column. */}
         <div
-          className={`relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-display text-[15px] font-extrabold transition-colors ${
+          className={`relative z-10 hidden h-10 w-10 shrink-0 items-center justify-center rounded-full font-display text-[15px] font-extrabold transition-colors sm:flex ${
             completed
               ? "bg-[radial-gradient(circle_at_35%_30%,var(--color-gold-bright),var(--color-gold)_70%)] text-[#04101f] shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_0_20px_rgba(255,193,56,0.35)]"
               : "border border-gold/40 bg-surface-elevated text-gold-bright"
@@ -49,9 +53,20 @@ export default function OnboardingStep({
         </div>
 
         <div className="flex-1 rounded-[28px] border border-brand-blue/25 bg-gradient-to-b from-surface-elevated to-[#050a16] p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.7)] sm:p-8">
-          <span className="mb-2 block font-display text-[11px] font-bold uppercase tracking-[.16em] text-gold-bright">
-            {eyebrow}
-          </span>
+          <div className="mb-2 flex items-center gap-2 sm:block">
+            <span
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-display text-[11px] font-extrabold transition-colors sm:hidden ${
+                completed
+                  ? "bg-[radial-gradient(circle_at_35%_30%,var(--color-gold-bright),var(--color-gold)_70%)] text-[#04101f]"
+                  : "border border-gold/40 bg-surface-elevated text-gold-bright"
+              }`}
+            >
+              {completed ? <CheckIcon className="h-3 w-3" /> : number}
+            </span>
+            <span className="font-display text-[11px] font-bold uppercase tracking-[.16em] text-gold-bright">
+              {eyebrow}
+            </span>
+          </div>
           <h3 className="mb-2.5 text-[1.2rem] font-extrabold leading-snug sm:text-[1.35rem]">
             {title}
           </h3>

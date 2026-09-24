@@ -117,7 +117,7 @@ export default function TallyEmbed({
           ) : (
             <>
               <span className="text-sm text-slate-600">
-                The form didn&rsquo;t load — this can happen if a browser
+                The form didn&rsquo;t load. This can happen if a browser
                 extension is blocking it.
               </span>
               <a

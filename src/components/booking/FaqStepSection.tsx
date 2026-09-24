@@ -22,7 +22,7 @@ export default function FaqStepSection() {
             What Is The <span className="text-brand-blue">A.C.E. Method?</span>
           </h2>
           <p className="mt-3 text-[13.5px] text-slate-500">
-            New — a quick visual explainer before you dive into the FAQs
+            New: a quick visual explainer before you dive into the FAQs
             below.
           </p>
         </div>

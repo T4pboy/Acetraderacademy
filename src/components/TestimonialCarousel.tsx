@@ -133,7 +133,7 @@ export default function TestimonialCarousel({ items, onOpen }: Props) {
             key={`${t.id}-${i < count ? "a" : "b"}`}
             data-card
             type="button"
-            aria-label={`View larger: ${t.name} — ${t.caption}`}
+            aria-label={`View larger: ${t.name}, ${t.caption}`}
             aria-hidden={i >= count}
             tabIndex={i >= count ? -1 : 0}
             onClick={() => onOpen(i % count)}

@@ -32,14 +32,14 @@ export const testimonials: Testimonial[] = [
   {
     id: "zee",
     name: "Zee",
-    caption: "Caught this banger the same night I activated the account — and passed it in 1 trade. Biggest win so far!",
+    caption: "Caught this banger the same night I activated the account, and passed it in 1 trade. Biggest win so far!",
     metric: "PASSED IN 1 TRADE",
     imageSrc: "/testimonials/zee.jpeg",
   },
   {
     id: "group-session",
     name: "Group Coaching Session",
-    caption: "Inside a live A.C.E. Method group call — real charts, real-time breakdowns.",
+    caption: "Inside a live A.C.E. Method group call, real charts, real-time breakdowns.",
     metric: "LIVE GROUP CALL",
     imageSrc: "/testimonials/group-session.jpeg",
   },

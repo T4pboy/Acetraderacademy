@@ -15,7 +15,7 @@ export default function StickyUrgencyBar({ name }: Props) {
           <span className="animate-live-dot absolute inline-flex h-full w-full rounded-full bg-warning" />
         </span>
         <span className="font-display text-[12px] font-bold uppercase tracking-wide text-warning sm:text-[13px]">
-          Wait {name} — your spot isn&rsquo;t locked in yet.
+          Wait {name}, your spot isn&rsquo;t locked in yet.
         </span>
         <span className="text-[12px] text-text-secondary sm:text-[13px]">
           Finish the steps below before your call.

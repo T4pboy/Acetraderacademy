@@ -19,7 +19,7 @@ export default function OnboardingHero() {
         </h1>
 
         <p className="mx-auto max-w-[500px] text-[14px] leading-relaxed text-text-secondary sm:text-[15.5px]">
-          You&rsquo;re officially in. Five quick steps below — knock them out
+          You&rsquo;re officially in. Five quick steps below, knock them out
           in the next 10 minutes and you&rsquo;re set up for your first week.
           The path to $1M funded starts here.
         </p>
