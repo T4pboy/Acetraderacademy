@@ -1,4 +1,4 @@
-import TallyEmbed from "./TallyEmbed";
+import ApplyForm from "./apply/ApplyForm";
 
 export default function ApplicationSection() {
   return (
@@ -9,13 +9,12 @@ export default function ApplicationSection() {
             Next, apply to see if the <span className="grad-text">A.C.E. Method</span> is right for you
           </h2>
           <p className="text-text-muted">
-            A short application — not a sales call. We review every
-            submission to see if it&rsquo;s a fit before we talk.
+            A quick 6-step application, then pick a time for your free Strategy Call. Takes about 2 minutes.
           </p>
         </div>
 
-        <div className="mx-auto max-w-[720px]">
-          <TallyEmbed />
+        <div className="mx-auto max-w-[640px]">
+          <ApplyForm />
         </div>
       </div>
     </section>
