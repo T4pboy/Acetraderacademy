@@ -202,7 +202,7 @@ export default function ApplyForm() {
           onSelect={(v) => selectAndAdvance("timeCommitment", v)}
         />
       )}
-      {step === 6 && <BookingStep fullName={data.fullName} email={data.email} />}
+      {step === 6 && <BookingStep fullName={data.fullName} email={data.email} phone={data.phone} />}
     </StepShell>
   );
 }
