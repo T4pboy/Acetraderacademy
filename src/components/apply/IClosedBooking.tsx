@@ -93,7 +93,7 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
 
   if (loadError) {
     return (
-      <div className="w-full rounded-[28px] bg-white p-6 text-center shadow-[0_30px_60px_-25px_rgba(0,0,0,0.5)]">
+      <div className="w-full text-center">
         <p className="text-[14px] text-slate-600">
           We couldn&rsquo;t load the calendar right now. We&rsquo;ve got your details and will reach out at{" "}
           <span className="font-semibold text-slate-900">{email}</span> to schedule your call.
@@ -104,7 +104,7 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
 
   if (!availabilities) {
     return (
-      <div className="flex min-h-[320px] w-full flex-col items-center justify-center gap-3 rounded-[28px] bg-white px-6 text-center shadow-[0_30px_60px_-25px_rgba(0,0,0,0.5)]">
+      <div className="flex min-h-[220px] w-full flex-col items-center justify-center gap-3 text-center">
         <span className="font-display text-[11px] font-bold uppercase tracking-[.1em] text-slate-500">
           Loading available times
         </span>
@@ -116,7 +116,7 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
   const times = selectedDate ? (availabilities[selectedDate] ?? []) : [];
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-[28px] bg-white p-6 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.5)] sm:p-8">
+    <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap gap-2">
         {dates.map((date) => (
           <button

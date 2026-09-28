@@ -25,18 +25,18 @@ export default function StepShell({ step, totalSteps, title, onBack, children }:
         </div>
       </div>
 
-      <div className="rounded-[28px] border border-brand-blue/25 bg-gradient-to-b from-surface-elevated to-[#050a16] p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.7)] sm:p-8">
+      <div className="rounded-[28px] bg-white p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] sm:p-8">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
-            className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-border px-3.5 py-2 font-display text-[11px] font-bold uppercase tracking-wide text-text-muted transition-colors hover:border-gold/40 hover:text-gold-bright"
+            className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-2 font-display text-[11px] font-bold uppercase tracking-wide text-slate-500 transition-colors hover:border-gold/40 hover:text-gold-bright"
           >
             <ArrowLeftIcon className="h-3.5 w-3.5" />
             Back
           </button>
         )}
-        <h3 className="mb-6 text-[1.2rem] font-extrabold leading-snug sm:text-[1.35rem]">{title}</h3>
+        <h3 className="mb-6 text-[1.2rem] font-extrabold leading-snug text-slate-900 sm:text-[1.35rem]">{title}</h3>
         {children}
       </div>
     </div>

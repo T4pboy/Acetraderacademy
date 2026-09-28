@@ -19,8 +19,8 @@ export default function SingleSelectStep({ options, value, onSelect }: Props) {
             onClick={() => onSelect(opt.value)}
             className={`w-full rounded-2xl border px-5 py-4 text-left text-[15px] font-semibold transition-colors duration-150 ${
               selected
-                ? "border-gold bg-gold/10 text-text-primary"
-                : "border-border bg-surface text-text-secondary hover:border-gold/40 hover:bg-gold/5 hover:text-text-primary"
+                ? "border-gold bg-gold/10 text-slate-900"
+                : "border-slate-200 bg-white text-slate-600 hover:border-gold/40 hover:bg-gold/5 hover:text-slate-900"
             }`}
           >
             <span className="flex items-center justify-between gap-3">

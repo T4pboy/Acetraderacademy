@@ -2,9 +2,9 @@ import { ArrowRightIcon } from "./icons";
 import type { ApplyFormData } from "@/data/applyFormConfig";
 
 const INPUT_CLASSES =
-  "w-full rounded-2xl border border-border bg-surface px-4 py-3.5 text-[15px] text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-brand-blue focus:shadow-[0_0_0_3px_rgba(59,130,246,0.15)]";
+  "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-brand-blue focus:shadow-[0_0_0_3px_rgba(59,130,246,0.15)]";
 const INPUT_ERROR_CLASSES =
-  "w-full rounded-2xl border border-error/60 bg-surface px-4 py-3.5 text-[15px] text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-error focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]";
+  "w-full rounded-2xl border border-error/60 bg-white px-4 py-3.5 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-error focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]";
 
 function isEmailValid(email: string) {
   return /^\S+@\S+\.\S+$/.test(email.trim());
@@ -33,7 +33,7 @@ export default function ContactStep({ data, onChange, attempted, onNext }: Props
       className="flex flex-col gap-4"
     >
       <div>
-        <label className="mb-1.5 block text-[13px] font-semibold text-text-secondary" htmlFor="apply-fullName">
+        <label className="mb-1.5 block text-[13px] font-semibold text-slate-600" htmlFor="apply-fullName">
           Full name
         </label>
         <input
@@ -51,7 +51,7 @@ export default function ContactStep({ data, onChange, attempted, onNext }: Props
       </div>
 
       <div>
-        <label className="mb-1.5 block text-[13px] font-semibold text-text-secondary" htmlFor="apply-email">
+        <label className="mb-1.5 block text-[13px] font-semibold text-slate-600" htmlFor="apply-email">
           Email
         </label>
         <input
@@ -69,7 +69,7 @@ export default function ContactStep({ data, onChange, attempted, onNext }: Props
       </div>
 
       <div>
-        <label className="mb-1.5 block text-[13px] font-semibold text-text-secondary" htmlFor="apply-phone">
+        <label className="mb-1.5 block text-[13px] font-semibold text-slate-600" htmlFor="apply-phone">
           Phone
         </label>
         <input
