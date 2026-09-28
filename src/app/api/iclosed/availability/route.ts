@@ -33,7 +33,20 @@ export async function POST(request: Request) {
     const json = await res.json().catch(() => null);
     if (!res.ok || !json?.data?.availabilities) {
       console.error("iClosed availability request failed", res.status, json);
-      return NextResponse.json({ ok: false, error: "Could not load availability" }, { status: 502 });
+      // TEMPORARY diagnostic fields (remove once the Netlify env var issue is confirmed fixed).
+      // Never include any part of the API key here, even for debugging.
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Could not load availability",
+          debug: {
+            upstreamStatus: res.status,
+            upstreamBody: json,
+            linkPrefixUsed: linkPrefix,
+          },
+        },
+        { status: 502 },
+      );
     }
 
     return NextResponse.json({ ok: true, availabilities: json.data.availabilities });
