@@ -55,12 +55,7 @@ export async function POST(request: Request) {
     const json = await res.json().catch(() => null);
     if (!res.ok) {
       console.error("iClosed booking rejected", res.status, json);
-      // TEMPORARY diagnostic field (remove once the booking failure is diagnosed).
-      // Never include any part of the API key here, even for debugging.
-      return NextResponse.json(
-        { ok: false, error: "Booking was rejected", debug: { upstreamStatus: res.status, upstreamBody: json } },
-        { status: 502 },
-      );
+      return NextResponse.json({ ok: false, error: "Booking was rejected" }, { status: 502 });
     }
 
     const webhookUrl = process.env.ZAPIER_WEBHOOK_URL;
