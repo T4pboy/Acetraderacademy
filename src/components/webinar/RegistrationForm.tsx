@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { WEBINAR_SHORT_LABEL } from "@/data/webinar";
 
 const INPUT =
   "w-full rounded-2xl border bg-white px-4 py-3.5 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-brand-blue focus:shadow-[0_0_0_3px_rgba(59,130,246,0.15)]";
@@ -55,9 +56,17 @@ export default function RegistrationForm({ onClose }: { onClose?: () => void }) 
           &times;
         </button>
       )}
-      <h2 className="mb-6 pr-8 text-[1.2rem] font-extrabold leading-snug text-slate-900 sm:text-[1.35rem]">
-        Reserve your free VIP seat
-      </h2>
+      <div className="mb-6 px-6 text-center">
+        <h2 className="text-[1.35rem] font-extrabold leading-snug text-slate-900 sm:text-[1.5rem]">
+          Spots are limited
+        </h2>
+        <p className="mt-1.5 text-[15px] font-semibold leading-snug text-slate-700">
+          Show up live to get your free prop account.
+        </p>
+        <p className="mt-3 inline-block rounded-full bg-slate-900 px-4 py-1.5 font-display text-[11.5px] font-bold uppercase tracking-wide text-gold-bright">
+          {WEBINAR_SHORT_LABEL}
+        </p>
+      </div>
 
       <div className="flex flex-col gap-4">
         <div>
@@ -116,9 +125,6 @@ export default function RegistrationForm({ onClose }: { onClose?: () => void }) 
           {sending ? "Saving your seat..." : "Save My Free Seat"}
         </button>
         {error && <p className="text-center text-[13px] text-error">{error}</p>}
-        <p className="text-center text-[12.5px] text-slate-500">
-          🎁 Registrants get the A.C.E. Blueprint sent straight to their inbox
-        </p>
       </div>
     </form>
   );
