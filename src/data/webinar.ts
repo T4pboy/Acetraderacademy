@@ -8,8 +8,7 @@ export const WEBINAR_DATE_LABEL = "Sunday, October 4, 2026";
 export const WEBINAR_TIME_LABEL = "7:00 PM EST";
 export const WEBINAR_SHORT_LABEL = "Oct 4, 2026 · 7PM EST";
 
-// TODO: replace with the real attendee join URL.
-export const ZOOM_LINK = "https://zoom.us/j/REPLACE_WITH_REAL_MEETING_ID";
+export const ZOOM_LINK = "https://us05web.zoom.us/j/83118066601?pwd=pb1Hmflo8IOSDK5aB4dTweOla5Ztis.1";
 
 // TODO: replace with the address the reminder emails are actually sent from.
 export const SENDER_EMAIL = "SENDER_EMAIL@yourdomain.com";
@@ -40,8 +39,7 @@ export const OBJECTION_VIDEOS: WebinarVideo[] = [
   })),
 ];
 
-// TODO: replace with the 4 real YouTube video IDs.
-export const YOUTUBE_IDS = ["YOUTUBE_ID_1", "YOUTUBE_ID_2", "YOUTUBE_ID_3", "YOUTUBE_ID_4"];
+export const YOUTUBE_IDS = ["HRZSw020EYA", "dozblzSb7Gs", "tC96Lir3yg4", "IKWCSBS59zg"];
 
 export function isPlaceholderId(id: string) {
   return /^(WISTIA_ID_|YOUTUBE_ID_)/.test(id);

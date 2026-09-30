@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
-import VideoSlot from "@/components/booking/VideoSlot";
 import CopyLinkCard from "@/components/webinar/CopyLinkCard";
 import MoreFromSpeaker from "@/components/webinar/MoreFromSpeaker";
-import ObjectionVideos from "@/components/webinar/ObjectionVideos";
 import WebinarLogo from "@/components/webinar/WebinarLogo";
 import SenderGraphic from "@/components/webinar/SenderGraphic";
 import { SENDER_EMAIL, SPEAKER_NAME } from "@/data/webinar";
@@ -92,23 +90,9 @@ export default async function WebinarConfirmedPage({
             Thank You For <span className="grad-text">Signing Up{name ? `, ${name}` : ""}!</span>
           </h1>
           <p className="mx-auto max-w-[600px] text-[15px] leading-relaxed text-text-secondary sm:text-[17px]">
-            Your seat isn&rsquo;t fully locked in until you finish the two steps below. Watch the video first, then
-            save your link and check your inbox so you don&rsquo;t miss the A.C.E. masterclass.
+            Your seat isn&rsquo;t fully locked in until you finish the two steps below. Save your link and check
+            your inbox so you don&rsquo;t miss the A.C.E. masterclass.
           </p>
-        </section>
-
-        {/* VSL */}
-        <section className="px-6 pb-10">
-          <div className="mx-auto mb-4 max-w-[700px] rounded-full bg-gradient-to-r from-brand-blue to-brand-blue-bright px-5 py-2.5 text-center font-display text-[12px] font-bold uppercase tracking-wide text-white">
-            ▶ Play the video to turn the sound on
-          </div>
-          {/* TODO: replace VideoSlot with the real confirmation VSL embed (Wistia / Vidalytics). */}
-          <VideoSlot size="hero" label="VSL Placeholder · Video coming soon" />
-          <div className="mx-auto mt-6 max-w-[700px] rounded-2xl border border-warning/40 bg-warning/10 px-5 py-4 text-center text-[14px] leading-relaxed text-text-secondary">
-            <strong className="mr-1 font-display uppercase tracking-wide text-warning">Do this first:</strong>
-            Please watch this important video in full right now. Your next steps will appear in your email inbox at
-            the end of your video.
-          </div>
         </section>
 
         {/* Step 1 */}
@@ -136,19 +120,6 @@ export default async function WebinarConfirmedPage({
             </p>
             <SenderGraphic />
           </div>
-        </section>
-
-        {/* Objection videos */}
-        <section className="px-6 py-14">
-          <div className="mx-auto mb-9 max-w-[640px] text-center">
-            <h2 className="mb-3 text-[1.5rem] font-extrabold leading-tight sm:text-[1.9rem]">
-              Got Questions? <span className="grad-text">Watch These While You Wait</span>
-            </h2>
-            <p className="text-[14.5px] leading-relaxed text-text-secondary">
-              The 10 things traders ask us most before they commit. Tap any card to watch.
-            </p>
-          </div>
-          <ObjectionVideos />
         </section>
 
         <section className="px-6 pb-20">

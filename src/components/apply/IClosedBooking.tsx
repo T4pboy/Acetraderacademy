@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckIcon, CalendarIcon } from "@/components/onboarding/icons";
-import { ClockIcon } from "./icons";
+import { ArrowLeftIcon, ArrowRightIcon, ClockIcon } from "./icons";
 
 type Props = {
   email: string;
@@ -48,9 +48,18 @@ function groupByPeriod(times: string[]) {
   return groups.filter((g) => g.items.length > 0);
 }
 
+// Calls can't be booked sooner than this many days after the day the visitor applies.
+const MIN_LEAD_DAYS = 3;
+
 // Returns "YYYY-MM-DD" for "now" as seen in the given IANA timezone.
 function todayInTimeZone(timeZone: string) {
   return new Intl.DateTimeFormat("en-CA", { timeZone }).format(new Date());
+}
+
+function addDays(dateStr: string, days: number) {
+  const d = new Date(`${dateStr}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
 }
 
 // Converts a wall-clock date+time in `timeZone` to a UTC ISO string, handling
@@ -86,19 +95,37 @@ function zonedDateTimeToUtcISOString(dateStr: string, timeStr: string, timeZone:
   return new Date(naiveUtcGuess - offsetMs).toISOString();
 }
 
-function formatDateParts(dateStr: string) {
+const WEEKDAY_HEADERS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+// Month keys are "YYYY-MM".
+function monthKeyOf(dateStr: string) {
+  return dateStr.slice(0, 7);
+}
+
+function shiftMonth(key: string, delta: number) {
+  const [y, m] = key.split("-").map(Number);
+  const d = new Date(Date.UTC(y, m - 1 + delta, 1));
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+function formatMonthLabel(key: string) {
   // Noon avoids the date rendering as the day before in timezones behind UTC.
-  const d = new Date(`${dateStr}T12:00:00`);
-  return {
-    weekday: d.toLocaleDateString(undefined, { weekday: "short" }),
-    day: d.toLocaleDateString(undefined, { day: "numeric" }),
-    month: d.toLocaleDateString(undefined, { month: "short" }),
-  };
+  return new Date(`${key}-01T12:00:00`).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+// Leading nulls pad the first week so day 1 lands under the right weekday.
+function buildMonthCells(key: string): (string | null)[] {
+  const [y, m] = key.split("-").map(Number);
+  const leading = new Date(Date.UTC(y, m - 1, 1)).getUTCDay();
+  const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const cells: (string | null)[] = Array(leading).fill(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(`${key}-${String(d).padStart(2, "0")}`);
+  return cells;
 }
 
 function formatDateLabel(dateStr: string) {
   const d = new Date(`${dateStr}T12:00:00`);
-  return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 }
 
 function formatTimeLabel(time: string) {
@@ -114,34 +141,50 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
   const [loadError, setLoadError] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [booking, setBooking] = useState<"idle" | "booking" | "error">("idle");
+  const [booking, setBooking] = useState<"idle" | "booking" | "error" | "taken">("idle");
+  const [viewMonth, setViewMonth] = useState<string | null>(null);
+
+  // Fetches the free slots, keeping only days at or after the minimum lead time.
+  // Returns null if the request fails.
+  async function fetchAvailability(): Promise<Availabilities | null> {
+    const earliestBookableDate = addDays(todayInTimeZone(BOOKING_TIME_ZONE), MIN_LEAD_DAYS);
+    try {
+      const res = await fetch("/api/iclosed/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timeZone: BOOKING_TIME_ZONE, currentDate: earliestBookableDate }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) return null;
+      const allowed: Availabilities = {};
+      for (const [date, slots] of Object.entries(json.availabilities as Availabilities)) {
+        if (date >= earliestBookableDate && slots.length > 0) allowed[date] = slots;
+      }
+      return allowed;
+    } catch {
+      return null;
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
-    async function loadAvailability() {
-      try {
-        const res = await fetch("/api/iclosed/availability", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ timeZone: BOOKING_TIME_ZONE, currentDate: todayInTimeZone(BOOKING_TIME_ZONE) }),
-        });
-        const json = await res.json();
-        if (cancelled) return;
-        if (!res.ok || !json.ok) {
-          setLoadError(true);
-          return;
-        }
-        setAvailabilities(json.availabilities);
-        const firstDate = Object.keys(json.availabilities).sort()[0];
-        if (firstDate) setSelectedDate(firstDate);
-      } catch {
-        if (!cancelled) setLoadError(true);
+    fetchAvailability().then((allowed) => {
+      if (cancelled) return;
+      if (!allowed) {
+        setLoadError(true);
+        return;
       }
-    }
-    loadAvailability();
+      setAvailabilities(allowed);
+      const firstDate = Object.keys(allowed).sort()[0];
+      if (firstDate) {
+        setSelectedDate(firstDate);
+        setViewMonth(monthKeyOf(firstDate));
+      }
+    });
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function confirmBooking() {
@@ -156,13 +199,32 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
-        setBooking("error");
+        await handleBookingFailure();
         return;
       }
       router.push(`/booking-confirmed?name=${encodeURIComponent(fullName)}`);
     } catch {
-      setBooking("error");
+      await handleBookingFailure();
     }
+  }
+
+  // A failed booking usually means someone else just took the slot. Reload the
+  // calendar so the taken time disappears, and tell the visitor to pick another.
+  async function handleBookingFailure() {
+    const fresh = await fetchAvailability();
+    if (!fresh) {
+      setBooking("error");
+      return;
+    }
+    const stillOpen = selectedDate && selectedTime ? fresh[selectedDate]?.includes(selectedTime) : false;
+    setAvailabilities(fresh);
+    setSelectedTime(null);
+    if (selectedDate && !fresh[selectedDate]) {
+      const nextDate = Object.keys(fresh).sort()[0] ?? null;
+      setSelectedDate(nextDate);
+      if (nextDate) setViewMonth(monthKeyOf(nextDate));
+    }
+    setBooking(stillOpen ? "error" : "taken");
   }
 
   if (loadError) {
@@ -186,9 +248,30 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
     );
   }
 
-  const dates = Object.keys(availabilities).sort();
+  const openDates = Object.keys(availabilities)
+    .filter((d) => availabilities[d].length > 0)
+    .sort();
+
+  if (openDates.length === 0 || !viewMonth) {
+    return (
+      <div className="w-full text-center">
+        <p className="text-[14px] text-slate-600">
+          There are no open Strategy Call times right now. We&rsquo;ve got your details and will reach out at{" "}
+          <span className="font-semibold text-slate-900">{email}</span> to schedule your call.
+        </p>
+      </div>
+    );
+  }
+
+  const openSet = new Set(openDates);
+  const firstMonth = monthKeyOf(openDates[0]);
+  const lastMonth = monthKeyOf(openDates[openDates.length - 1]);
+  const cells = buildMonthCells(viewMonth);
   const times = selectedDate ? toHourlySlots(availabilities[selectedDate] ?? []) : [];
   const groups = groupByPeriod(times);
+
+  const navButton =
+    "flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-colors hover:border-gold/60 hover:bg-gold/10 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-slate-200 disabled:hover:bg-transparent";
 
   return (
     <div className="flex w-full flex-col gap-5">
@@ -197,30 +280,67 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
           <CalendarIcon className="h-3.5 w-3.5" />
           Pick a day
         </div>
-        <div className="flex flex-wrap gap-2">
-          {dates.map((date) => {
-            const { weekday, day, month } = formatDateParts(date);
-            const selected = date === selectedDate;
-            return (
-              <button
-                key={date}
-                type="button"
-                onClick={() => {
-                  setSelectedDate(date);
-                  setSelectedTime(null);
-                }}
-                className={`flex min-w-[74px] flex-col items-center gap-0.5 rounded-2xl border px-4 py-2.5 transition-colors ${
-                  selected
-                    ? "border-gold bg-gold/10 text-slate-900"
-                    : "border-slate-200 bg-white text-slate-600 hover:border-gold/50 hover:bg-gold/5"
-                }`}
-              >
-                <span className="text-[10px] font-bold uppercase tracking-wide opacity-70">{weekday}</span>
-                <span className="text-[18px] font-extrabold leading-tight">{day}</span>
-                <span className="text-[10px] font-semibold uppercase tracking-wide opacity-70">{month}</span>
-              </button>
-            );
-          })}
+        <div className="rounded-2xl border border-slate-200 p-3 sm:p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <button
+              type="button"
+              aria-label="Previous month"
+              disabled={viewMonth <= firstMonth}
+              onClick={() => setViewMonth(shiftMonth(viewMonth, -1))}
+              className={navButton}
+            >
+              <ArrowLeftIcon className="h-3.5 w-3.5" />
+            </button>
+            <span className="font-display text-[14px] font-bold text-slate-900">{formatMonthLabel(viewMonth)}</span>
+            <button
+              type="button"
+              aria-label="Next month"
+              disabled={viewMonth >= lastMonth}
+              onClick={() => setViewMonth(shiftMonth(viewMonth, 1))}
+              className={navButton}
+            >
+              <ArrowRightIcon className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          <div className="mb-1 grid grid-cols-7 text-center text-[10px] font-bold uppercase tracking-wide text-slate-400">
+            {WEEKDAY_HEADERS.map((d) => (
+              <span key={d} className="py-1">
+                {d}
+              </span>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-7 gap-1">
+            {cells.map((date, i) => {
+              if (!date) return <span key={`pad-${i}`} />;
+              const dayNumber = Number(date.slice(8));
+              const available = openSet.has(date);
+              const selected = date === selectedDate;
+              return (
+                <button
+                  key={date}
+                  type="button"
+                  disabled={!available}
+                  aria-label={formatDateLabel(date)}
+                  aria-pressed={selected}
+                  onClick={() => {
+                    setSelectedDate(date);
+                    setSelectedTime(null);
+                  }}
+                  className={`flex aspect-square items-center justify-center rounded-full text-[13px] font-semibold transition-colors ${
+                    selected
+                      ? "bg-gold text-[#04101f] shadow-[0_0_14px_rgba(255,193,56,0.45)]"
+                      : available
+                        ? "bg-gold/10 text-slate-900 hover:bg-gold/30"
+                        : "cursor-not-allowed text-slate-300"
+                  }`}
+                >
+                  {dayNumber}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -228,7 +348,7 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
         <div className="mb-2 flex items-center justify-between gap-2 text-[12px] font-semibold text-slate-500">
           <span className="flex items-center gap-1.5">
             <ClockIcon className="h-3.5 w-3.5" />
-            Pick a time
+            {selectedDate ? `Pick a time on ${formatDateLabel(selectedDate)}` : "Pick a time"}
           </span>
           <span className="text-[11px] font-medium normal-case text-slate-400">Eastern Time (ET)</span>
         </div>
@@ -267,6 +387,13 @@ export default function IClosedBooking({ email, fullName, phone }: Props) {
       {selectedDate && selectedTime && (
         <p className="text-[13px] font-semibold text-slate-700">
           You&rsquo;re booking: {formatDateLabel(selectedDate)} at {formatTimeLabel(selectedTime)} ET
+        </p>
+      )}
+
+      {booking === "taken" && (
+        <p className="rounded-xl border border-error/30 bg-error/5 px-4 py-3 text-[13px] font-semibold text-error">
+          Sorry, that time was just booked by someone else. The calendar has been updated, so please pick another day
+          or time.
         </p>
       )}
 
