@@ -49,7 +49,8 @@ function groupByPeriod(times: string[]) {
 }
 
 // Calls can't be booked sooner than this many days after the day the visitor applies.
-const MIN_LEAD_DAYS = 3;
+// 0 = no minimum: any day iClosed reports as open from today on is bookable.
+const MIN_LEAD_DAYS = 0;
 
 // Returns "YYYY-MM-DD" for "now" as seen in the given IANA timezone.
 function todayInTimeZone(timeZone: string) {

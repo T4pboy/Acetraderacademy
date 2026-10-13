@@ -10,6 +10,18 @@ function splitName(fullName: string) {
   return { firstName, lastName };
 }
 
+// iClosed rejects numbers without a "+" country code (e.g. "5555550100" or
+// "08012345678"). Keep an explicit "+", assume US/Canada for bare 10-digit
+// numbers, and otherwise treat the digits as already including the country code.
+function normalizePhone(raw: string) {
+  const trimmed = raw.trim();
+  const digits = trimmed.replace(/\D/g, "");
+  if (trimmed.startsWith("+")) return `+${digits}`;
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return `+${digits.replace(/^0+/, "")}`;
+}
+
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
 
@@ -47,7 +59,7 @@ export async function POST(request: Request) {
         firstName,
         lastName,
         email: body.email,
-        phoneNumber: body.phone,
+        phoneNumber: normalizePhone(body.phone),
         secondaryQuestionsAnswer: [],
       }),
     });

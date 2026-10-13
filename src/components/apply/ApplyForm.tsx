@@ -14,6 +14,7 @@ import StepShell from "./StepShell";
 import ContactStep from "./ContactStep";
 import SingleSelectStep from "./SingleSelectStep";
 import BookingStep from "./BookingStep";
+import { isPhoneWithCountryCode } from "./phone";
 
 const STORAGE_KEY = "ace-apply-form-draft";
 
@@ -33,7 +34,7 @@ function isNameValid(name: string) {
   return name.trim().length > 1;
 }
 function isPhoneValid(phone: string) {
-  return phone.replace(/\D/g, "").length >= 7;
+  return isPhoneWithCountryCode(phone);
 }
 function isContactValid(d: ApplyFormData) {
   return isNameValid(d.fullName) && isEmailValid(d.email) && isPhoneValid(d.phone);
