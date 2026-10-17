@@ -124,8 +124,10 @@ export default function OnboardingChecklist() {
           completed={isDone(4)}
           onToggle={() => toggle(4)}
         >
-          {/* Placeholder link — swap for the real library URL when ready. */}
-          <StepCtaButton href="#" icon={<LibraryIcon className="h-4 w-4" />}>
+          <StepCtaButton
+            href="https://whop.com/fortheculturefx/exp_bQS0zbzvzpugyS/app/courses/cors_KXc6CjX3rOyAM/lessons/lesn_yyblYeyKX5Waq/"
+            icon={<LibraryIcon className="h-4 w-4" />}
+          >
             Access The Library
           </StepCtaButton>
         </OnboardingStep>
