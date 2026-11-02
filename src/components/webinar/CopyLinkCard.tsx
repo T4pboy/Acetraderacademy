@@ -66,7 +66,7 @@ export default function CopyLinkCard() {
       <p className="mb-8 text-[14.5px] text-text-secondary">
         Click it now &amp; bookmark it for{" "}
         <strong className="text-gold-bright">
-          {WEBINAR_DATE_LABEL_FULL} at {WEBINAR_TIME_LABEL}
+          {WEBINAR_DATE_LABEL_FULL} at {WEBINAR_TIME_LABEL} EST
         </strong>
       </p>
 

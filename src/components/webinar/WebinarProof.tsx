@@ -38,21 +38,27 @@ export default function WebinarProof({ showCta = true }: { showCta?: boolean }) 
             sizes="(max-width: 640px) 90vw, 520px"
             className="h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
           />
+          <p className="mt-5 max-w-[440px] text-[15px] leading-relaxed text-slate-700">
+            &ldquo;A.C.E is a proven factor with patience and discipline.&rdquo;
+          </p>
+          <p className="mt-2 text-[14px] font-semibold text-slate-500">&ndash; {NEW_STUDENT.name}</p>
+          <p className="mt-8 text-[12.5px] font-extrabold uppercase tracking-[.12em] text-slate-900 sm:text-[13.5px]">50K Account Passed: My Funded Futures</p>
           <Image
             src="/testimonials/jorge-mff.jpeg"
             alt="My Funded Futures Builder 50K passing certificate"
             width={942}
             height={652}
             sizes="(max-width: 640px) 90vw, 520px"
-            className="mt-6 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
+            className="mt-3 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
           />
+          <p className="mt-8 text-[12.5px] font-extrabold uppercase tracking-[.12em] text-slate-900 sm:text-[13.5px]">50K Account Passed: Apex Trader Funding</p>
           <Image
             src="/testimonials/jorge-apex.jpeg"
             alt="Apex Trader Funding 50k account certificate"
             width={1080}
             height={712}
             sizes="(max-width: 640px) 90vw, 520px"
-            className="mt-6 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
+            className="mt-3 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
           />
         </article>
         {testimonials.map((t) => {

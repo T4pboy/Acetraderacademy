@@ -7,7 +7,6 @@ import WebinarProof from "@/components/webinar/WebinarProof";
 import WebinarLogo from "@/components/webinar/WebinarLogo";
 import WebinarCountdown from "@/components/webinar/WebinarCountdown";
 import {
-  CLASS_LENGTH,
   RISK_DISCLAIMER,
   SEAT_CAP,
   SPEAKER_NAME,
@@ -34,8 +33,8 @@ const RECAP = [
   "The 3 checks every trade must pass, including when not to trade",
   "The one rule that stops you losing a funded account after you pass",
   "Live Q&A on your own trading",
-  `${CLASS_LENGTH} minutes, completely free`,
-  "The A.C.E. Blueprint for everyone who registers",
+  "2 hours, completely free",
+  "The A.C.E. Blueprint ($200 value), free for everyone who registers",
   "Live-only bonus: indicator access and a shot at 2 free accounts",
 ];
 
@@ -75,7 +74,7 @@ export default function WebinarPage() {
 
             <RegisterButton />
             <p className="mt-4 text-[12.5px] text-slate-300">
-              🎁 Registrants get the A.C.E. Blueprint sent straight to their inbox
+              🎁 Register free and get the A.C.E. Blueprint ($200 value) sent straight to your inbox
             </p>
             <Image
               src="/kyrien.jpg"
