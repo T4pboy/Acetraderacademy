@@ -9,6 +9,8 @@ declare module "react" {
       "wistia-player": DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
         "media-id": string;
         aspect?: number | string;
+        autoplay?: boolean;
+        muted?: boolean;
       };
     }
   }

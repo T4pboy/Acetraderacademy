@@ -47,7 +47,13 @@ export function RegisterProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function RegisterButton({ className = "" }: { className?: string }) {
+export function RegisterButton({
+  className = "",
+  label = "Save My Free Seat",
+}: {
+  className?: string;
+  label?: string;
+}) {
   const openModal = useContext(RegisterContext);
   return (
     <button
@@ -55,7 +61,7 @@ export function RegisterButton({ className = "" }: { className?: string }) {
       onClick={openModal}
       className={`inline-flex min-h-14 w-full items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-bright px-9 py-[19px] font-display text-[14.5px] font-extrabold uppercase tracking-wide text-[#04101f] shadow-[0_0_30px_rgba(255,193,56,0.35),0_10px_25px_-8px_rgba(255,193,56,0.7)] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110 sm:w-auto ${className}`}
     >
-      Save My Free Seat
+      {label}
     </button>
   );
 }

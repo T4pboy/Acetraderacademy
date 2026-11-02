@@ -2,11 +2,21 @@
 
 export const SPEAKER_NAME = "Kyrien";
 
-/** 4 Oct 2026, 7:00 PM US Eastern (EDT, UTC-4 on that date). */
-export const WEBINAR_START_ISO = "2026-10-04T19:00:00-04:00";
-export const WEBINAR_DATE_LABEL = "Sunday, October 4, 2026";
-export const WEBINAR_TIME_LABEL = "7:00 PM EST";
-export const WEBINAR_SHORT_LABEL = "Oct 4, 2026 · 7PM EST";
+/**
+ * The one date setting. Every countdown, date line and calendar file reads from here.
+ * TODO: Mubarak to confirm the time. 7:00 PM Eastern is assumed for the countdown only;
+ * on-page copy shows the [TIME] placeholder until WEBINAR_TIME_LABEL is set.
+ * 8 Nov 2026 falls after the US clocks go back, so Eastern is EST (UTC-5).
+ */
+export const WEBINAR_START_ISO = "2026-11-08T19:00:00-05:00";
+/** TODO: Mubarak to confirm. Used for the calendar event length only. */
+export const WEBINAR_DURATION_MIN = 90;
+
+export const WEBINAR_DATE_LABEL = "Sunday, November 8";
+export const WEBINAR_DATE_LABEL_FULL = "Sunday, November 8, 2026";
+/** TODO: replace with the real time, e.g. "7:00 PM". */
+export const WEBINAR_TIME_LABEL = "[TIME]";
+export const WEBINAR_SHORT_LABEL = `Nov 8, 2026 · ${WEBINAR_TIME_LABEL} EST`;
 
 export const ZOOM_LINK = "https://us05web.zoom.us/j/83118066601?pwd=pb1Hmflo8IOSDK5aB4dTweOla5Ztis.1";
 
@@ -43,4 +53,43 @@ export const YOUTUBE_IDS = ["HRZSw020EYA", "dozblzSb7Gs", "tC96Lir3yg4", "IKWCSB
 
 export function isPlaceholderId(id: string) {
   return /^(WISTIA_ID_|YOUTUBE_ID_)/.test(id);
+}
+
+// Placeholders from Mubarak and Kyrien. Anything in [BRACKETS] renders as-is until replaced.
+export const SEAT_CAP = "[SEAT CAP]";
+export const CLASS_LENGTH = "[LENGTH]";
+export const VISION_LINE = "Stuck between almost funded and actually paid? This is for you.";
+
+/** Discord or WhatsApp invite. Empty string hides the button and the popup. */
+export const GROUP_LINK = "";
+/** Welcome video from Kyrien (Wistia ID). */
+export const WELCOME_VIDEO_ID = "WISTIA_ID_WELCOME";
+/** "Why traders lose funded accounts right after passing" (Wistia ID). */
+export const FUNDED_VIDEO_ID = "WISTIA_ID_FUNDED";
+/** Student interview video (Wistia ID). */
+export const INTERVIEW_VIDEO_ID = "WISTIA_ID_INTERVIEW";
+
+export const NEW_STUDENT = {
+  name: "Jorge",
+  accountSize: "two $50K accounts",
+};
+
+export const KIT = {
+  price: 21,
+  anchorPrice: "[ANCHOR PRICE]",
+  /** Whop plan ID for the $21 kit (plan_xxx). Placeholder shows a dashed box instead of the embed. */
+  whopPlanId: "WHOP_PLAN_ID",
+  /** Whop product page. Used as the checkout link until whopPlanId is set for the embedded checkout. */
+  checkoutUrl: "https://whop.com/fortheculturefx/a-c-e-pre-class-kit",
+  mockupSrc: "/kit-mockup.jpeg",
+  afterClassBonus: "[AFTER-CLASS BONUS, e.g. replay access]",
+  blueprintDifference: "[ONE LINE ON THE DIFFERENCE]",
+  guarantee: "[GUARANTEE TERMS]",
+};
+
+export const RISK_DISCLAIMER =
+  "Trading involves substantial risk and is not suitable for everyone. Results shown are from individual students and are not typical. This masterclass is education only, not financial advice.";
+
+export function isPlaceholderValue(v: string) {
+  return !v || /^\[.*\]$/.test(v) || /^(WISTIA_ID_|WHOP_PLAN_ID|YOUTUBE_ID_)/.test(v);
 }

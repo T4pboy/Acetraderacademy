@@ -9,14 +9,14 @@ const INPUT =
 
 export default function RegistrationForm({ onClose }: { onClose?: () => void }) {
   const router = useRouter();
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [attempted, setAttempted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
 
-  const nameOk = fullName.trim().length > 1;
+  const nameOk = firstName.trim().length > 1;
   const emailOk = /^\S+@\S+\.\S+$/.test(email.trim());
   const phoneOk = phone.replace(/\D/g, "").length >= 7;
 
@@ -30,10 +30,10 @@ export default function RegistrationForm({ onClose }: { onClose?: () => void }) 
       const res = await fetch("/api/webinar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, phone }),
+        body: JSON.stringify({ firstName: firstName.trim(), email, phone }),
       });
       if (!res.ok) throw new Error("bad response");
-      router.push(`/webinar/confirmed?name=${encodeURIComponent(fullName.trim())}`);
+      router.push(`/webinar/kit?name=${encodeURIComponent(firstName.trim())}`);
     } catch {
       setError("Something went wrong saving your seat. Please try again.");
       setSending(false);
@@ -71,18 +71,18 @@ export default function RegistrationForm({ onClose }: { onClose?: () => void }) 
       <div className="flex flex-col gap-4">
         <div>
           <label htmlFor="webinar-name" className="mb-1.5 block text-[13px] font-semibold text-slate-600">
-            Full name
+            First name
           </label>
           <input
             id="webinar-name"
             type="text"
-            autoComplete="name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="Jane Trader"
+            autoComplete="given-name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Jane"
             className={`${INPUT} ${attempted && !nameOk ? "border-error/60" : "border-slate-200"}`}
           />
-          {attempted && !nameOk && <p className="mt-1.5 text-[12px] text-error">Enter your full name.</p>}
+          {attempted && !nameOk && <p className="mt-1.5 text-[12px] text-error">Enter your first name.</p>}
         </div>
 
         <div>

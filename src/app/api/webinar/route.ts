@@ -3,13 +3,9 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
 
-  if (
-    !body ||
-    typeof body.email !== "string" ||
-    typeof body.fullName !== "string" ||
-    !/^\S+@\S+\.\S+$/.test(body.email.trim()) ||
-    body.fullName.trim().length < 2
-  ) {
+  const firstName: string = typeof body?.firstName === "string" ? body.firstName.trim() : "";
+
+  if (!body || typeof body.email !== "string" || !/^\S+@\S+\.\S+$/.test(body.email.trim()) || firstName.length < 2) {
     return NextResponse.json({ ok: false, error: "Invalid submission" }, { status: 400 });
   }
 
@@ -25,7 +21,9 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         event: "webinar_registration",
-        fullName: body.fullName.trim(),
+        firstName,
+        // Kept so existing Zapier field mappings keep working.
+        fullName: firstName,
         email: body.email.trim(),
         phone: typeof body.phone === "string" ? body.phone.trim() : "",
         source: "ace-academy-webinar",

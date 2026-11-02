@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { testimonials } from "@/data/testimonials";
+import { NEW_STUDENT } from "@/data/webinar";
 import { RegisterButton } from "./RegisterModal";
 
 const IMAGE_SIZES: Record<string, [number, number]> = {
@@ -14,7 +15,7 @@ const IMAGE_SIZES: Record<string, [number, number]> = {
  * "See what's possible" proof stack: one white, dotted-border sheet where each
  * testimonial is headline, screenshot, quote, then a seat button.
  */
-export default function WebinarProof() {
+export default function WebinarProof({ showCta = true }: { showCta?: boolean }) {
   return (
     <div className="mx-auto max-w-[620px] rounded-[28px] border-[3px] border-dotted border-slate-300 bg-white px-5 py-12 text-center shadow-[0_40px_80px_-30px_rgba(0,0,0,0.6)] sm:px-10">
       <h2 className="mb-12 text-[1.5rem] font-extrabold leading-tight text-slate-900 sm:text-[1.9rem]">
@@ -23,6 +24,37 @@ export default function WebinarProof() {
       </h2>
 
       <div className="flex flex-col gap-12">
+        <article className="flex flex-col items-center">
+          <h3 className="mb-5 text-[1.15rem] font-extrabold uppercase leading-snug tracking-wide text-slate-900 sm:text-[1.3rem]">
+            <span className="text-[#c98a00]">
+              {NEW_STUDENT.name}, passed {NEW_STUDENT.accountSize} this week
+            </span>
+          </h3>
+          <Image
+            src="/testimonials/wins.jpeg"
+            alt="Student sharing a winning day in the community #wins channel"
+            width={900}
+            height={312}
+            sizes="(max-width: 640px) 90vw, 520px"
+            className="h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
+          />
+          <Image
+            src="/testimonials/jorge-mff.jpeg"
+            alt="My Funded Futures Builder 50K passing certificate"
+            width={942}
+            height={652}
+            sizes="(max-width: 640px) 90vw, 520px"
+            className="mt-6 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
+          />
+          <Image
+            src="/testimonials/jorge-apex.jpeg"
+            alt="Apex Trader Funding 50k account certificate"
+            width={1080}
+            height={712}
+            sizes="(max-width: 640px) 90vw, 520px"
+            className="mt-6 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
+          />
+        </article>
         {testimonials.map((t) => {
           if (!t.imageSrc) return null;
           const [w, h] = IMAGE_SIZES[t.id] ?? [1080, 700];
@@ -52,12 +84,14 @@ export default function WebinarProof() {
         })}
       </div>
 
-      <div className="mt-14 flex flex-col items-center">
-        <RegisterButton />
-        <p className="mt-3 text-[12.5px] text-slate-500">
-          Show up LIVE to get the A.C.E. Blueprint sent to your inbox
-        </p>
-      </div>
+      {showCta && (
+        <div className="mt-14 flex flex-col items-center">
+          <RegisterButton />
+          <p className="mt-3 text-[12.5px] text-slate-500">
+            Show up LIVE to get the A.C.E. Blueprint sent to your inbox
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,6 +6,8 @@ type Props = {
   mediaId: string;
   /** width / height, e.g. 16/9. Defaults to 16:9. */
   aspect?: number;
+  /** Muted autoplay; Wistia shows its own tap-to-unmute prompt. */
+  autoplay?: boolean;
 };
 
 /**
@@ -20,7 +22,7 @@ type Props = {
  * The blurred poster while the element is `:not(:defined)` is Wistia's own
  * recommended CSS, scoped to this mediaId so multiple instances don't clash.
  */
-export default function WistiaVideo({ mediaId, aspect = 16 / 9 }: Props) {
+export default function WistiaVideo({ mediaId, aspect = 16 / 9, autoplay }: Props) {
   const paddingTop = `${(1 / aspect) * 100}%`;
 
   return (
@@ -38,7 +40,7 @@ export default function WistiaVideo({ mediaId, aspect = 16 / 9 }: Props) {
             (different native resolutions) were rendering at slightly
             different heights otherwise, breaking the grid's alignment. */}
         <div className="overflow-hidden rounded-[calc(var(--radius-4xl)-6px)]" style={{ aspectRatio: aspect }}>
-          <wistia-player media-id={mediaId} aspect={aspect} className="block h-full w-full" />
+          <wistia-player media-id={mediaId} aspect={aspect} autoplay={autoplay} muted={autoplay} className="block h-full w-full" />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { WEBINAR_DATE_LABEL, WEBINAR_TIME_LABEL, ZOOM_LINK } from "@/data/webinar";
+import { WEBINAR_DATE_LABEL_FULL, WEBINAR_TIME_LABEL, ZOOM_LINK } from "@/data/webinar";
 import WebinarCountdown from "./WebinarCountdown";
 
 async function copyText(text: string) {
@@ -66,7 +66,7 @@ export default function CopyLinkCard() {
       <p className="mb-8 text-[14.5px] text-text-secondary">
         Click it now &amp; bookmark it for{" "}
         <strong className="text-gold-bright">
-          {WEBINAR_DATE_LABEL} at {WEBINAR_TIME_LABEL}
+          {WEBINAR_DATE_LABEL_FULL} at {WEBINAR_TIME_LABEL}
         </strong>
       </p>
 
