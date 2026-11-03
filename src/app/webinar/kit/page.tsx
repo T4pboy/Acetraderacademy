@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import GoldButton from "@/components/webinar/GoldButton";
 import WebinarLogo from "@/components/webinar/WebinarLogo";
 import KitTicket from "@/components/webinar/KitTicket";
-import { KIT, RISK_DISCLAIMER, WEBINAR_START_ISO, WEBINAR_TIME_LABEL } from "@/data/webinar";
+import SlotVideo from "@/components/webinar/SlotVideo";
+import { KIT, PROMO_VIDEO_ID, RISK_DISCLAIMER, WEBINAR_START_ISO, WEBINAR_TIME_LABEL } from "@/data/webinar";
 
 export const metadata: Metadata = {
   title: "Your Pre-Class Kit | For The Culture FX",
@@ -189,6 +190,10 @@ export default async function WebinarKitPage({ searchParams }: { searchParams: P
             it, and my rules for protecting a funded account. Start this week, and walk into the class with real
             questions about your own trades.
           </p>
+
+          <div className="mb-10">
+            <SlotVideo id={PROMO_VIDEO_ID} label="Video coming soon" />
+          </div>
 
           <div className="mx-auto mb-8 max-w-[420px]">
             {KIT.mockupSrc ? (

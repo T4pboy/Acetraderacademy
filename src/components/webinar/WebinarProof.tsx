@@ -61,6 +61,20 @@ export default function WebinarProof({ showCta = true }: { showCta?: boolean }) 
             className="mt-3 h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
           />
         </article>
+        <article className="flex flex-col items-center">
+          <h3 className="mb-5 text-[1.15rem] font-extrabold uppercase leading-snug tracking-wide text-slate-900 sm:text-[1.3rem]">
+            <span className="text-[#c98a00]">3 payouts in the first month</span>
+          </h3>
+          <Image
+            src="/testimonials/deuce.jpeg"
+            alt="Deuce in the community: I got 3 payouts first month in here. This system is real if you use it the right way."
+            width={1080}
+            height={195}
+            sizes="(max-width: 640px) 90vw, 520px"
+            className="h-auto w-full max-w-[480px] rounded-2xl border border-slate-200 shadow-md"
+          />
+          <p className="mt-2 text-[14px] font-semibold text-slate-500">&ndash; Deuce</p>
+        </article>
         {testimonials.map((t) => {
           if (!t.imageSrc) return null;
           const [w, h] = IMAGE_SIZES[t.id] ?? [1080, 700];

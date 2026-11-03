@@ -63,6 +63,8 @@ export const GROUP_LINK = "";
 export const WELCOME_VIDEO_ID = "WISTIA_ID_WELCOME";
 /** "Why traders lose funded accounts right after passing" (Wistia ID). */
 export const FUNDED_VIDEO_ID = "WISTIA_ID_FUNDED";
+/** Intro video shown on the registration page and the kit page (Wistia ID). */
+export const PROMO_VIDEO_ID = "z07i685wzi";
 /** Student interview video (Wistia ID). */
 export const INTERVIEW_VIDEO_ID = "WISTIA_ID_INTERVIEW";
 

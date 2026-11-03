@@ -5,8 +5,10 @@ import Image from "next/image";
 import { RegisterButton, RegisterProvider } from "@/components/webinar/RegisterModal";
 import WebinarProof from "@/components/webinar/WebinarProof";
 import WebinarLogo from "@/components/webinar/WebinarLogo";
+import SlotVideo from "@/components/webinar/SlotVideo";
 import WebinarCountdown from "@/components/webinar/WebinarCountdown";
 import {
+  PROMO_VIDEO_ID,
   RISK_DISCLAIMER,
   SEAT_CAP,
   SPEAKER_NAME,
@@ -87,6 +89,10 @@ export default function WebinarPage() {
               {VISION_LINE}
             </p>
           </div>
+        </section>
+
+        <section className="px-6 pb-6 pt-2">
+          <SlotVideo id={PROMO_VIDEO_ID} label="Video coming soon" />
         </section>
 
         <section className="px-6 pb-10 pt-4">
