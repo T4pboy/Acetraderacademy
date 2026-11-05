@@ -1,6 +1,10 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js/min";
 import { ArrowRightIcon } from "./icons";
 import type { ApplyFormData } from "@/data/applyFormConfig";
-import { isPhoneWithCountryCode } from "./phone";
+import { getCountryOptions, guessCountry, isPhoneWithCountryCode, splitStored, toE164 } from "./phone";
 
 const INPUT_CLASSES =
   "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-brand-blue focus:shadow-[0_0_0_3px_rgba(59,130,246,0.15)]";
@@ -16,9 +20,8 @@ function isNameValid(name: string) {
 function isPhoneValid(phone: string) {
   return isPhoneWithCountryCode(phone);
 }
-function phoneError(phone: string) {
-  if (!phone.trim().startsWith("+")) return "Include your country code, starting with + (e.g. +1 555 123 4567).";
-  return "Enter a complete phone number with country code.";
+function phoneError() {
+  return "Enter a complete phone number for the selected country.";
 }
 
 type Props = {
@@ -29,6 +32,22 @@ type Props = {
 };
 
 export default function ContactStep({ data, onChange, attempted, onNext }: Props) {
+  const countries = useMemo(() => getCountryOptions(), []);
+  const [country, setCountry] = useState<CountryCode>(() => splitStored(data.phone).country ?? "US");
+  const [national, setNational] = useState(() => splitStored(data.phone).national);
+
+  // Pick the visitor's country from their browser locale (after hydration).
+  useEffect(() => {
+    if (!data.phone) setCountry(guessCountry());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Store E.164 when the number is usable, otherwise keep the raw text so the
+  // field stays invalid and the user sees the error.
+  function commit(c: CountryCode, nat: string) {
+    onChange("phone", toE164(nat, c) ?? nat.trim());
+  }
+
   const contactValid = isNameValid(data.fullName) && isEmailValid(data.email) && isPhoneValid(data.phone);
   // Show an error once a field has been touched (or Next was attempted).
   const showName = (attempted || data.fullName !== "") && !isNameValid(data.fullName);
@@ -83,17 +102,49 @@ export default function ContactStep({ data, onChange, attempted, onNext }: Props
         <label className="mb-1.5 block text-[13px] font-semibold text-slate-600" htmlFor="apply-phone">
           Phone
         </label>
-        <input
-          id="apply-phone"
-          type="tel"
-          autoComplete="tel"
-          value={data.phone}
-          onChange={(e) => onChange("phone", e.target.value)}
-          placeholder="+1 555 123 4567"
-          className={showPhone ? INPUT_ERROR_CLASSES : INPUT_CLASSES}
-        />
+        <div className="flex gap-2">
+          <select
+            aria-label="Country"
+            value={country}
+            onChange={(e) => {
+              const next = e.target.value as CountryCode;
+              setCountry(next);
+              commit(next, national);
+            }}
+            className={`${showPhone ? INPUT_ERROR_CLASSES : INPUT_CLASSES} !w-[7.5rem] shrink-0 !px-3`}
+          >
+            {countries.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.code} +{c.dial} ({c.name})
+              </option>
+            ))}
+          </select>
+          <input
+            id="apply-phone"
+            type="tel"
+            autoComplete="tel-national"
+            value={national}
+            onChange={(e) => {
+              const v = e.target.value;
+              // Pasted/typed "+234..." switches the country automatically.
+              if (v.trim().startsWith("+")) {
+                const parsed = parsePhoneNumberFromString(v.trim());
+                if (parsed?.country) {
+                  setCountry(parsed.country);
+                  setNational(parsed.nationalNumber);
+                  commit(parsed.country, parsed.nationalNumber);
+                  return;
+                }
+              }
+              setNational(v);
+              commit(country, v);
+            }}
+            placeholder="Phone number"
+            className={showPhone ? INPUT_ERROR_CLASSES : INPUT_CLASSES}
+          />
+        </div>
         {showPhone && (
-          <p className="mt-1.5 text-[12px] text-error">{phoneError(data.phone)}</p>
+          <p className="mt-1.5 text-[12px] text-error">{phoneError()}</p>
         )}
       </div>
 

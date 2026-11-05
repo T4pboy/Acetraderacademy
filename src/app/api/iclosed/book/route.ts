@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { toE164 } from "@/components/apply/phone";
 
 const ICLOSED_BASE_URL = "https://public.api.iclosed.io/v1";
 
@@ -8,18 +9,6 @@ function splitName(fullName: string) {
   // iClosed requires both names; single-word entries reuse the first name as the last.
   const lastName = parts.slice(1).join(" ") || firstName;
   return { firstName, lastName };
-}
-
-// iClosed rejects numbers without a "+" country code (e.g. "5555550100" or
-// "08012345678"). Keep an explicit "+", assume US/Canada for bare 10-digit
-// numbers, and otherwise treat the digits as already including the country code.
-function normalizePhone(raw: string) {
-  const trimmed = raw.trim();
-  const digits = trimmed.replace(/\D/g, "");
-  if (trimmed.startsWith("+")) return `+${digits}`;
-  if (digits.length === 10) return `+1${digits}`;
-  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
-  return `+${digits.replace(/^0+/, "")}`;
 }
 
 export async function POST(request: Request) {
@@ -43,6 +32,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Server not configured" }, { status: 500 });
   }
 
+  // The form already sends E.164; this re-validates and normalises any other format.
+  const phoneNumber = toE164(body.phone);
+  if (!phoneNumber) {
+    return NextResponse.json({ ok: false, error: "Invalid phone number" }, { status: 400 });
+  }
+
   const { firstName, lastName } = splitName(body.fullName);
 
   try {
@@ -59,7 +54,7 @@ export async function POST(request: Request) {
         firstName,
         lastName,
         email: body.email,
-        phoneNumber: normalizePhone(body.phone),
+        phoneNumber,
         secondaryQuestionsAnswer: [],
       }),
     });
